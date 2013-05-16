@@ -1,0 +1,30 @@
+#Proyecto
+main.cpp
+mainwindow.h
+ui_mainwindow.h
+mainwindow.cpp
+moc_mainwindow.cpp
+Makefile
+.cproject
+*.pro
+*.ui
+*.user
+*.Debug
+*.Release
+
+# Compilacion
+*.exe
+*.o
+
+
+## archivos opcionales
+*.jpg
+*.gif
+*.png
+*.tmp
+*.sdf
+*.vs
+*.dbmdl
+
+
+

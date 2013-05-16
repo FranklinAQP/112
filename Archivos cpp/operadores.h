@@ -15,3 +15,12 @@ public:
 };
 
 #endif // OPERADORES_H
+int main(int){
+    treenodo *nodo;   // puntero al nodo
+    nodo= new treenodo;
+    crear(nodo);
+    preorden(nodo);
+    getch();
+    system("PAUSE");
+    return 0;
+}
