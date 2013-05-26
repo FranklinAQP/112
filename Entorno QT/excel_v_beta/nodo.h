@@ -1,41 +1,27 @@
 #ifndef _NODO_H_
 #define _NODO_H_
 #include <vector>
-#include "tipos.h"
-
-
-using namespace std;
+#include "expresion.h"
 
 class nodo   /* clase nodo aun no terminada */
 {
-    friend class matrix;
-    friend class constante;
-protected:
-    T nodo_valor; //valor del nodo es interno opsss
-    Func my_funcion;
-    coord nodo_f; // fila actual
-    coord nodo_c; // columna actual
-  //   T (*funciones)(T*, T*); //puntero a funciones
+    //friend class matrix;
+
+private:
+    T nodo_valor; /*variable que almacena el valor*/
+    Func my_funcion; /*variable que almacena en string(Func) la funcion*/
+    expresion *ptrexp;/*puntero a expresion que es una clase padre y nos permite navegar a las clases hijas*/
+    vector <nodo*> ptrdependencies;/*vector de punteros para manejar dependencias*/
 
 public:
-    nodo(); // Constructor
-    //nodo *proxh=NULL;
-    //nodo *proxv=NULL;
-    /* funciones que devuelven el valor de variables publicas y privadas */
-    T get_nodo_valor();
-    virtual coord get_nodo_f();
-    virtual coord get_nodo_c();
-    //nodo *getproxh(){return proxh;} //esto se implementara como matriz de dependencias en la clase celda
-    //nodo *getproxv(){return proxv;} //esto se implementara como matriz de dependencias en la clase celda
-    /*funciones para dar nuevos valores a las variables de los nodos*/
-    virtual void set_nodo_valor(T elem); // Insert a new element
-    //void setproxh(nodo *& proxh){this->proxh = proxh;}
-    //void setproxv(nodo *& proxv){this->proxv = proxv;}
-    virtual void set_nodo_f(coord fila);
-    virtual void set_nodo_c(coord columna);
+    nodo(); /*Constructor*/
+    virtual ~nodo(); /*Destructor Virtual*/
+    inline T get_value(){return nodo_valor;}/*devuelve el valor de variable nodo_valor*/
+    virtual void set_value(T elem); /*Insertar un nuevo elemento*/
 };
 
-typedef vector<nodo> my_row;
+typedef vector<nodo> my_row; /*defino variable de una fila de nodos como un vector*/
+typedef nodo* nodoptr;/*defino variable de un puntero a nodo*/
 
 
 #endif // NODO_H

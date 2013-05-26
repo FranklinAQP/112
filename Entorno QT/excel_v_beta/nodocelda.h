@@ -1,17 +1,20 @@
 #ifndef _NODO_CELDA_H
 #define _NODO_CELDA_H
-#include "expresion.h"
+#include "nodo.h"
+#include "matrix.h"
 
-class nodocelda : public expresion   /* clase celda aun no terminada */
+/* clase que ayuda a manejar dependencias conecta con el nodo para sacar su valor*/
+class nodocelda : public expresion
 {
 private:
-        nodocelda* pcelda;
+        nodoptr pnodo;/*Variable puntero a nodo*/
 public:
-        nodocelda();
-        ~nodocelda();
-        virtual T get_value(){return pcelda->get_value();}
+        nodocelda(nodoptr _pnodo): pnodo(_pnodo){}/*Constructor*/
+        nodocelda(class matrix* matrixptr, Func celda);/*Constructor segun su direccion en Func(string)*/
+        virtual ~nodocelda();/*Destructor Virtual*/
+        void address(class matrix* matrixptr, Func celda);/*puntero segun su direccion en Func(string)*/
+        T get_value(){return pnodo->get_value();}/*obtiene el valor del nodo apuntado*/
 };
 
-
-
 #endif // _NODO_CELDA_H
+

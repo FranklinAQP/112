@@ -1,23 +1,16 @@
-#ifndef CONSTANTE_H
-#define CONSTANTE_H
-#include "expresion.h"
-
-class constante: public expresion  // Clase operadores binarios
+#ifndef _CONSTANTE_H
+#define _CONSTANTE_H
+#include "nodo.h"
+/* Clase constante hereda de clase expresion */
+class constante: public expresion
 {
 private:
-    T nodo_valor; //valor del nodo
+    T nodo_valor; /*variable valor del nodo*/
 public:
-    constante(); // Constructor
-    ~constante(); //bye nodo
-//    T get_mi_valor();
-//    coord get_nodo_f();
-//    coord get_nodo_c();
-
-    /*funciones para dar nuevos valores a las variables de los nodos*/
-//    void set_nodo_valor(T elem); // Insert a new element
-//    void set_nodo_f(coord fila);
-//    void set_nodo_c(coord columna);
-
+    constante(T _constante) : nodo_valor(_constante) {} /*Constructor*/
+    virtual ~constante(); /*Destructor virtual*/
+    inline T get_value(){return nodo_valor;}/*retorna el valor de la variable*/
+    inline T set_value(T new_valor){ nodo_valor=new_valor;}/*cambia valor*/
 };
 
-#endif // CONSTANTE_H
+#endif // _CONSTANTE_H

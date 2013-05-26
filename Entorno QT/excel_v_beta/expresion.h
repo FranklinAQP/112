@@ -1,12 +1,15 @@
 #ifndef _EXPRESION_H_
 #define _EXPRESION_H_
-#include "nodo.h"
+#include "tipos.h"
+
+/**Esta clase heredara a constante.h operacion.h y nodocelda.h**/
 class expresion
 {
 public:
-    expresion();
-    virtual ~expresion();
-    virtual T get_value() =0;
+    expresion();/*Constructor*/
+    virtual ~expresion();/*Destructor Virtual*/
+    virtual T get_value() =0;/*Funcion Virtual Pura que convierte a la clase en abstracta*/
 };
-typedef T (*fnptr)(T,T);
+
+
 #endif // _EXPRESION_H_
