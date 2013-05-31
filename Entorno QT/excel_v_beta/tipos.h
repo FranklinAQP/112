@@ -4,20 +4,6 @@
 #include <assert.h>
 using namespace std;
 
-/*
-template <string C,int F> struct Coordenada{
-    enum{c=C, f=F};
-    int col ();
-}
-int Coordenada::col(){
-    string mi_col = c;
-    int temp=0;
-    if(mi_col.size()>0)
-        for(register size_t i=0; i<=mi_col.size(); ++i)
-            temp = temp + ((int)mi_col[i])-65;
-    return temp;
-}
-*/
 /* Definimos el tipo cadena para la funcion ingresada  */
 typedef string Func;
 /* Definimos el tipo de valor para las coordenadas  */

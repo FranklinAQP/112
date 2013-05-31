@@ -16,9 +16,18 @@ public:
         pright(ptrright), /* asignamos el valor de variable pright */
         funcion(funcion_ptr) /* asignamos el valor de variable funcion */
         {}
+    operacion(fnptr funcion_ptr){/*constructor con solo un parametro*/
+        pleft = NULL;
+        funcion = funcion_ptr;
+        pright = NULL;
+    }
     virtual ~operacion(); /*Destructor virtual*/
     T get_value();/*devuelve el valor de una funcion*/
-
+    void set_fnptr(fnptr _funcion) { funcion = _funcion; }
+    void set_Left(expresion* aLeft) { pleft = aLeft; }
+    void set_Right(expresion* aRight) { pright = aRight; }
+    expresion* Left() { return pleft; }
+    expresion* Right() { return pright; }
 };
 
 #endif // _OPERACION_H_

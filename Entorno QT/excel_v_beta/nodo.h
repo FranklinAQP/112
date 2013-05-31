@@ -11,7 +11,7 @@ private:
     T nodo_valor; /*variable que almacena el valor*/
     Func my_funcion; /*variable que almacena en string(Func) la funcion*/
     expresion *ptrexp;/*puntero a expresion que es una clase padre y nos permite navegar a las clases hijas*/
-    vector <nodo*> ptrdependencies;/*vector de punteros para manejar dependencias*/
+    vector <nodo*> ptrdependencies;/*vector de punteros a los nodos que dependen de este para manejar dependencias*/
 
 public:
     nodo(); /*Constructor*/

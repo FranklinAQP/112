@@ -23,7 +23,7 @@ public:
         inline coord get_current_col() const {return current_col;}/*retorna valor de columna*/
         inline coord &get_max_col() {return max_col;}/*retrona maximo de columnas*/
         inline coord &get_max_row() {return max_row;}/*retorna maximo de filas*/
-        nodo get_nodo(coord f,coord c);
+        nodo get_nodo(coord f,coord c);/*retorna el nodo segun coordenadas f y c*/
         void set_nuevo_valorx(coord f, coord c,T &elem);/*ingresa valor en fila F y columna C*/
         void set_nuevo_valor(T &elem);/*ingresa un valor en la fila y columna actual*/
         inline void set_current_row(coord fila){current_row=fila;}/*cambia el valor de fila actual*/
