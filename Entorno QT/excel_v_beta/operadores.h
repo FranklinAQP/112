@@ -4,15 +4,40 @@
 #include <math.h>
 
 namespace all_operators{
-    T sumab(T a,T b);
-    T resb(T a,T b);
-    T multb(T a,T b);
-    T divb(T a,T b);
-    T sin(T a,T );
-    T none(T a,T );
+
+    T sumab(T a,T b){/*Funcion suma binaria*/
+        return a+b;
+    }
+    T resb(T a,T b){/*Funcion resta binaria*/
+        return a-b;
+    }
+    T multb(T a,T b){/*Funcion multiplicacion binaria*/
+        return a*b;
+    }
+    T divb(T a,T b){/*Funcion division binaria*/
+        return a/b;
+    }
+    T sint(T a,T ){/*Funcion seno*/
+        return sin(a);
+    }
+    T none(T a,T ){/*Funcion que no ejecuta nada, su uso puede eliminarse*/
+        return a;
+    }
+
     Func symbols_operators[]={"+","-","*","/","SIN"};/*Agregar nuevo simbolo aqui*/
-    fnptr allfunction[] = {&sumab,&resb,&multb,&divb,&sin};/*Agregar nueva funcion aqui*/
-    fnptr what_function(Func op);/*retorna la direccion de la funcion requerida dependiendo del simbolo del operador(Func)*/
-    Func operator_priority(size_t N);/*usado en stx.h y .cpp*/
+    fnptr allfunction[] = {&sumab,&resb,&multb,&divb,&sint};/*Agregar nueva funcion aqui*/
+    int n_operators = sizeof(symbols_operators)/sizeof(symbols_operators[0]);
+    /*retorna la direccion de la funcion requerida dependiendo del simbolo del operador(Func)*/
+    fnptr what_function(Func op){/*retorna la direccion de la funcion requerida dependiendo del simbolo del operador(Func)*/
+        for(register int i=0; i<n_operators;++i)
+            if(op==symbols_operators[i])
+                return allfunction[i];
+    }
+
+    /*Retorna el operador de acuerdo al orden de prioridad de mmenor(cerca a 0) a mayor(mas alejado)*/
+    Func operator_priority(size_t _N)/*usado en stx.h y .cpp*/
+    {
+        return symbols_operators[_N];
+    }
 }
 #endif // _OPERADORES_H_

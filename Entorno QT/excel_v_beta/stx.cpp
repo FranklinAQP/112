@@ -10,51 +10,84 @@ void stx::reduction()
             }
 }
 
-/*Para iniciar el vector de atomos*/
-void stx::starting_vector(int aumento)
-{
-    list_atomos.resize(10 + aumento);
-}
-
 /*Para separar los atomos de la cadena Func*/
 void stx::atomizer()
 {
     Func atomo = "";/*valor inicial necesario para concatenar*/
-    int x=-1;/*valor de ubicacion inicial necesario para ingresar en su ++ = 0*/
     for(register size_t i=0; i<my_func.size(); ++i)
         if(my_func[i]=='+' || my_func[i]=='-' || my_func[i]=='*' || my_func[i]=='/'){/*Aqui todos los operadores de size==1*/
           if(atomo.size()>0){
-            list_atomos[++x]=atomo;
+            list_atomos.push_back (atomo);
             atomo="";
           }
-          list_atomos[++x]=my_func[i];
-        }else if(atomo=="SIN"){/*Aqui operadores de size==3*/
-            list_atomos[++x]=atomo;
+          atomo+=my_func[i];
+          list_atomos.push_back (atomo);
+          atomo="";
+          }else if(atomo=="SIN"){/*Aqui operadores de size==3*/
+            list_atomos.push_back (atomo);
             atomo="";
         }else
             atomo+=my_func[i];
-    list_atomos[++x]=atomo;/*incluye el ultimo atomo completo*/
+    list_atomos.push_back (atomo);/*incluye el ultimo atomo completo*/
+}
+
+/*Para iniciar el vector de dependencias considerando los nodos internos(operadores) del arbol*/
+void stx::starting_vector()
+{
+    dependencies.resize(list_atomos.size()/2);
 }
 
 /*retorna el orden de prioridad del siguiente operador a evaluar que no tiene number_operators=0*/
-int stx::next_operador(size_t* number_operators)
-{
-        for(register int i=0; i<5; ++i)/*Modificar 5 aqui al agregar nuevo operador(simbolo y funcion o mejorar el codigo)*/
-            if(number_operators[i]>0)
+int stx::next_operador(size_t* numbers)
+{/*el orden que indica el array number_operators es:{+,-,*,/,SIN}*/
+        for(register int i=0; i<all_operators::n_operators; ++i)/*bucle segun la cantidad de operadores en operadores.h*/
+            if(numbers[i]>0)
                 return i;
         return -1;/*en caso no haya operadores en la cadena*/
 }
 
-/*Funcion para encontrar el operador que sera la raiz del arbol*/
-void stx::insert_node(size_t inf, size_t sup, size_t* number_operators)
+
+
+/*Funcion para encontrar la posicion del operador que sera la raiz del arbol
+y formara parte del primer elemento del vector de dependencias*/
+void stx::detect_root(size_t* number_operators)
 {
     if(next_operador(number_operators)==-1)
         return;/*retornar si no existe ningun operador*/
-    size_t cond=1, elected;/*variables necesarias*/
-    size_t middle=(sup-inf+1)/2;/*posicion media en la lista de atomos*/
-    int next_priority=next_operador(number_operators);/*valor de la prioridad mas baja existente*/
-    Func operador=operator_priority(next_priority);/*simbolo del operador de prioridad next_priority*/
-    size_t &cant=number_operators[next_priority];/*variable que referencia a la cantidad del operador existente*/
+    size_t inf=0, sup=list_atomos.size(), cond=1, elected;/*variables necesarias*/
+    size_t middle=(sup-inf+1)/2;/*posicion media del vector de atomos*/
+    int next_priority=next_operador(number_operators);/*posicion(0 a 4) de la prioridad mas baja existente*/
+    Func operador=all_operators::operator_priority(next_priority);/*simbolo del operador en posicion de next_priority*/
+    size_t &cant=number_operators[next_priority];/*variable que referencia a la cantidad de operadores del operador en posicion de next_priority*/
+    elected = middle;
+    while(cond){
+        if(list_atomos[elected]==operador){/*Si posicion de raiz elegida cumple la condicion*/
+            --cond;/*libera el while cond=0*/
+            --cant;/*disminuye la cantidad del operador utilizado*/
+        }else if(inf<elected && elected<middle)
+            --elected;
+        else if(elected==inf)
+            elected = middle + 1;
+        else if(elected<sup)
+            ++elected;
+    }   /*Si no se asigna valor para selected entonces el atomo es numero o puntero a nodo*/
+    if(sup-inf>=2){
+        fnptr _new_function=all_operators::what_function(list_atomos[elected]);
+        operacion nueva(_new_function);
+        dependencies[0] = &nueva;/*Creo el inicio o root del arbol */
+    }
+    /* ????? */
+}
+
+void stx::detect_node(size_t inf, size_t sup, size_t* number_operators)
+{
+    if(next_operador(number_operators)==-1)
+        return;/*retornar si no existe ningun operador*/
+    size_t cond=1, elected;/*variables necesarias condicional y posicion elegida*/
+    size_t middle=(sup-inf+1)/2;/*posicion media del vector de atomos*/
+    int next_priority=next_operador(number_operators);/*posicion(0 a 4) de la prioridad mas baja existente*/
+    Func operador=all_operators::operator_priority(next_priority);/*simbolo del operador en posicion de next_priority*/
+    size_t &cant=number_operators[next_priority];/*variable que referencia a la cantidad de operadores del operador en posicion de next_priority*/
     elected = middle;
     while(cond){
         if(list_atomos[elected]==operador){/*Si posicion de raiz elegida cumple la condicion*/
@@ -70,73 +103,38 @@ void stx::insert_node(size_t inf, size_t sup, size_t* number_operators)
         }else if(elected<sup)
             ++elected;
     }
+    /* ???? */
 }
 
-/*Funcion para encontrar el operador que sera la raiz del arbol*/
-void stx::insert_root(size_t* number_operators)
-{
-    if(next_operador(number_operators)==-1)
-        return;/*retornar si no existe ningun operador*/
-    size_t inf=0, sup=list_atomos.size(), cond=1, elected;/*variables necesarias*/
-    size_t middle=(sup-inf+1)/2;/*posicion media en la lista de atomos*/
-    int next_priority=next_operador(number_operators);/*valor de la prioridad mas baja existente*/
-    Func operador=operator_priority(next_priority);/*simbolo del operador de prioridad next_priority*/
-    size_t &cant=number_operators[next_priority];/*variable que referencia a la cantidad del operador existente*/
-    elected = middle;
-    while(cond){
-        if(list_atomos[elected]==operador){/*Si posicion de raiz elegida cumple la condicion*/
-            --cond;/*libera el while cond=0*/
-            --cant;/*disminuye la cantidad del operador utilizado*/
-        }else if(inf<elected && elected<middle)
-            --elected;
-        else if(elected<middle)
-            elected = middle + 1;
-        else if(list_atomos[elected]==operador){/*Si posicion de raiz elegida cumple la condicion*/
-            --cond;
-            --cant;
-        }else if(elected<sup)
-            ++elected;
-    }   /*Si no se asigna valor para selected entonces el atomo es numero o puntero a nodo*/
-    operacion n = operacion(what_function(list_atomos[elected]));/*Creo el inicio del arbol operacion* */
-    //n->setKey(key);
-      //  root = n;
-    //if(inf+1<sup){
-    //}
-}
-
-void stx::elementos()
-{
-    list_atom a_ordenar=list_atomos;
-    list_atomos.clear();
-    tree_ordened(a_ordenar);
-}
 
 /*Para ordenar los atomos en la forma de lectura del arbol binario*/
-list_atom stx::tree_ordened(list_atom atomos)
+void stx::tree_ordened()
 {/*identificamos presencia de operadores por prioridad en este orden: + - * / SIN */
     size_t number_operators[5]={0};
-    for(register size_t i=0; i<atomos.size();++i)
-        if(atomos[i]=="+")
+    for(register size_t i=0; i<list_atomos.size();++i)
+        if(list_atomos[i]=="+")
             ++number_operators[0];/*sumas*/
-        else if(atomos[i]=="-")
+        else if(list_atomos[i]=="-")
             ++number_operators[1];/*restas*/
-        else if(atomos[i]=="*")
+        else if(list_atomos[i]=="*")
             ++number_operators[2];/*multiplicaciones*/
-        else if(atomos[i]=="/")
+        else if(list_atomos[i]=="/")
             ++number_operators[3];/*divisiones*/
-        else if(atomos[i]=="SIN")
+        else if(list_atomos[i]=="SIN")
             ++number_operators[4];/*funciones seno*/
-    insert_root(number_operators);
+    detect_root(number_operators);
+    /* ????? */
 }
 
 
 expresion* stx::parse()
 {
+    dependencies.clear();/*quitamos referencias existentes en vector dependencies*/
+    list_atomos.clear();/*quitamos referencias existentes en vector list_atomos*/
     reduction();/*quitamos espacios de la funcion*/
-    starting_vector();/*inicializar el vector de atomos*/
     atomizer();/*Separamos los atomos al vector*/
-    //armar el arbol de acuerdo a la precedencia
-            //comenzar a poblar
-    //return new operator(new constante(5),&sumab,new constante(10));
-
+    starting_vector();/*inicializar el vector de punteros a expresion(nodos internos del arbol)*/
+    tree_ordened();/*armar el arbol de acuerdo a la precedencia*/
+            /*comenzar a poblar*/
+    return dependencies[0];/*retorna la raiz del arbol*/
 }

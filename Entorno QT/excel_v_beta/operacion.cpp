@@ -1,4 +1,8 @@
 #include "operacion.h"
+operacion::~operacion()
+{
+
+}
 
 /*Evalua una operacion en la cadena de la funcion*/
 T operacion::get_value()
