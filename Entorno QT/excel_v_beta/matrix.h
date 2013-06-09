@@ -31,6 +31,4 @@ public:
         inline void set_current_row_col(coord row, coord col){current_row=row; current_col=col;}/*cambia el valor de fila y columna actual*/
 };
 
-
-
 #endif // MATRIX_H

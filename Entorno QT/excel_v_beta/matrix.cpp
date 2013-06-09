@@ -11,7 +11,7 @@ void matrix::resizeh()
 /*-- Ampliacion vertical--*/
 void matrix::resizev()
 {
-        matriz.resize(max_row + my_incremento, my_row(max_col + my_incremento) );
+        matriz.resize(max_row + my_incremento, my_row(max_col) );
         get_max_row() += my_incremento;
 }
 
