@@ -11,7 +11,7 @@ public:
     constante(Func numero);/*Alternativa de Constructor*/
     virtual ~constante(); /*Destructor virtual*/
     inline T get_value(){return nodo_valor;}/*retorna el valor de la variable*/
-    inline T set_value(T new_valor){ nodo_valor=new_valor;}/*cambia valor*/
+    inline void set_value(T new_valor){ nodo_valor=new_valor;}/*cambia valor*/
 };
 
 #endif // _CONSTANTE_H

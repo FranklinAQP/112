@@ -18,6 +18,8 @@ public:
     virtual ~nodo(); /*Destructor Virtual*/
     inline T get_value(){return nodo_valor;}/*devuelve el valor de variable nodo_valor*/
     virtual void set_value(T elem); /*Insertar un nuevo elemento*/
+    void set_ptrdependencies(nodo* ptr_nodo);/*Inserta un puntero a nodo en el vector de dependencias*/
+    void erase_ptrdependencies(nodo* ptr_nodo);/*Elimina un vector a nodo en el vector de dependencias*/
 };
 
 typedef vector<nodo> my_row; /*defino variable de una fila de nodos como un vector*/

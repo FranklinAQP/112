@@ -35,7 +35,7 @@ void stx::atomizer()
 }
 
 /*Para saber si un atomo indicado es del tipo constante(numero)*/
-bool stx::is_constante(Func atomo)
+bool stx::is_constante(Func &atomo)
 {
     int point=0;/*numero de puntos en el atomo*/
     for(register size_t i=0; i<atomo.size(); ++i)
@@ -50,7 +50,7 @@ bool stx::is_constante(Func atomo)
 }
 
 /*Para saber si un atomo indicado es del tipo nodocelda(puntero a nodo)*/
-bool stx::is_nodocelda(Func atomo)
+bool stx::is_nodocelda(Func &atomo)
 {
     if(atomo[0]<'A' || 'Z'<atomo[0])
         return false;
@@ -65,7 +65,8 @@ bool stx::is_nodocelda(Func atomo)
     return true;
 }
 
-bool stx::is_function(Func atomo)
+/*Determina si el simbolo corresponde a una funcion*/
+bool stx::is_function(Func &atomo)
 {
     int n=0;
     while(n<all_operators::n_operators)
@@ -77,14 +78,14 @@ bool stx::is_function(Func atomo)
 }
 
 /*crea punteros a expresion dependiendo de la sintaxis de los atomos*/
-void stx::expresion_ptr(Func atomo, size_t pos)
+void stx::expresion_ptr(Func &atomo, size_t pos)
 {
     if(is_constante(atomo))
-        dependencies[pos]=&constante::constante(atomo);
+        dependencies[pos]=new constante(atomo);
     else if(is_nodocelda(atomo))
-        dependencies[pos]=&nodocelda::nodocelda(&logic_matrix_, atomo);
+        dependencies[pos]=new nodocelda(logic_matrix_, atomo);
     else if(is_function(atomo))
-        return;
+        return;/*esta clase de punteros lo creamos recien en detect_root()*/
     else{/*Error al no corresponder a un tipo conocido*/
         }
 }
@@ -121,7 +122,7 @@ size_t* stx::Number_Operators()
 
 
 /*retorna el orden de prioridad del siguiente operador a evaluar que no tiene number_operators=0*/
-int stx::next_operador(size_t* numbers)
+int stx::next_operador(size_t *&numbers)
 {/*el orden que indica el array number_operators es:{+,-,*,/,SIN}*/
         for(register int i=0; i<all_operators::n_operators; ++i)/*bucle segun la cantidad de operadores en operadores.h*/
             if(numbers[i]>0)
@@ -153,13 +154,13 @@ expresion* stx::detect_root(size_t inf, size_t sup, size_t* number_operators)
         else if(elected<sup)
             ++elected;
     }   /*Si no se asigna valor para selected entonces el atomo es puntero a constante o puntero a nodocelda*/
-    dependencies[elected]=&operacion::operacion(detect_root(inf, elected-1, number_operators),all_operators::what_function(list_atomos[elected]),detect_root(elected+1, sup, number_operators));
+    dependencies[elected]=new operacion(detect_root(inf, elected-1, number_operators),all_operators::what_function(list_atomos[elected]),detect_root(elected+1, sup, number_operators));
     return dependencies[elected];
 }
 
 void stx::Root()
 {
-    root = detect_root(0, list_atomos.size(), Number_Operators());
+    root = detect_root(size_t(0), list_atomos.size(), Number_Operators());
 }
 
 expresion* stx::parse()

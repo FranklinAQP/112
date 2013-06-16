@@ -37,7 +37,7 @@ matrix::matrix(coord incremento) // crear matriz
 
 }
 
-nodo matrix::get_nodo(coord fila, coord col){
+nodo &matrix::get_nodo(coord fila, coord col){
     assert(fila<= max_row && col<=max_col);/*Si es falso aborta el programa*/
     return matriz[fila][col];
 }
