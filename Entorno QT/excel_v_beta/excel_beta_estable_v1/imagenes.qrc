@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>imagenes/ico_add.png</file>
+        <file>imagenes/ico_close.png</file>
+        <file>imagenes/ico_cut.png</file>
+        <file>imagenes/ico_delete.png</file>
+        <file>imagenes/ico_exit.png</file>
+        <file>imagenes/ico_logo.png</file>
+        <file>imagenes/ico_logo2.png</file>
+        <file>imagenes/ico_open.png</file>
+        <file>imagenes/ico_salir.png</file>
+        <file>imagenes/ico_save.jpg</file>
+        <file>imagenes/ico_save.png</file>
+        <file>imagenes/ico_save_as.png</file>
+        <file>imagenes/icon_paste.png</file>
+        <file>imagenes/ixo_copy.png</file>
+    </qresource>
+</RCC>

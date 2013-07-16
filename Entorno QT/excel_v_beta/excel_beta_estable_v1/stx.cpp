@@ -1,9 +1,11 @@
-//#include <thread>/*libreria no comptaible con esta version */
+#include <thread>/*libreria c++11*/
+#include <algorithm>
 #include "stx.h"
 #include "constante.h"
 #include "nodocelda.h"
 #include "matrix.h"
 #include "operadores.h"/*no incluir en .h por error de multidefinicion*/
+#include <cassert>
 
 stx::stx()
     : root(0)
@@ -52,11 +54,12 @@ bool stx::is_constante(Func &atomo)
 {
     int point=0;/*numero de puntos en el atomo*/
     for(register size_t i=0; i<atomo.size(); ++i)
-        if(atomo[i] < '0' || '9' < atomo[i] )
+        if(atomo[i] < '0' || '9' < atomo[i] ){
             if(atomo[i]=='.')
                 ++point;
             else
                 return false;
+        }
     if(point>1)
         return false;
     return true;
@@ -91,13 +94,13 @@ bool stx::is_function(Func &atomo)
 }
 
 /*Paso 3a(usado en paso 3): crea punteros a expresion dependiendo de la sintaxis de los atomos*/
-void stx::expresion_ptr(Func &atomo, size_t pos)
+void stx::expresion_ptr(int & pos)
 {
-    if(is_constante(atomo))
-        dependencies[pos]=new constante(atomo);
-    else if(is_nodocelda(atomo))
-        dependencies[pos]=new nodocelda(logic_matrix_, atomo);
-    else if(is_function(atomo))
+    if(is_constante(list_atomos[pos]))
+        dependencies[pos]=new constante(list_atomos[pos]);
+    else if(is_nodocelda(list_atomos[pos]))
+        dependencies[pos]=new nodocelda(logic_matrix_, list_atomos[pos]);
+    else if(is_function(list_atomos[pos]))
         return;/*esta clase de punteros lo creamos recien en detect_root()*/
     else{/*Error al no corresponder a un tipo conocido*/
         }
@@ -107,8 +110,8 @@ void stx::expresion_ptr(Func &atomo, size_t pos)
 void stx::starting_vector()
 {
     dependencies.resize(list_atomos.size());/*el numero de punteros es equivalente al numero de atomos*/
-    for(register size_t i=0; i<list_atomos.size(); ++i)/*creamos punteros segun la sintaxis de cada atomo*/
-        expresion_ptr(list_atomos[i], i); /*Insertar hebras aqui*/
+    for(int i=0; i<int (list_atomos.size()); ++i)/*creamos punteros segun la sintaxis de cada atomo*/
+        expresion_ptr(i);
 }
 
 /*Usado en paso 4a: Para contar el numero de operadores de cada tipo en el vector de atomos */
@@ -175,7 +178,7 @@ void stx::Root()
 }
 
 /*Ejecuta el parse pasos del 1 al 4 y devueleve el valor de root*/
-expresion* stx::parse()
+void stx::parse()
 {
     dependencies.clear();/*quitamos referencias existentes en vector dependencies*/
     list_atomos.clear();/*quitamos referencias existentes en vector list_atomos*/
@@ -183,5 +186,5 @@ expresion* stx::parse()
     atomizer();/*Separamos los atomos al vector*/
     starting_vector();/*inicializar el vector de punteros a expresion(nodos del arbol)*/
     Root();/*armar el arbol de acuerdo a la precedencia y terminar de poblar*/
-    return root;/*retorna la raiz del arbol*/
+    //return root;/*retorna la raiz del arbol*/
 }

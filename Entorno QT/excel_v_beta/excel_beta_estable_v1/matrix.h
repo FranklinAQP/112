@@ -5,10 +5,10 @@
 class matrix   /*Crea una matriz dinamica con vectores*/
 {
 private:
-        coord current_row, /*--fila actual--*/
-              current_col, /*--columna actual--*/
-              max_row, /*--maximo de espacio en filas--*/
+        coord max_row, /*--maximo de espacio en filas--*/
               max_col, /*--maximo de espacio en columnas--*/
+              current_row, /*--fila actual--*/
+              current_col, /*--columna actual--*/
               my_incremento; /*--incremento en el resize--*/
         vector <my_row> matriz;/*Declaramos variable vector 2D*/
         void resize(); /*--para ampliar la matriz en filas y columnas--*/
