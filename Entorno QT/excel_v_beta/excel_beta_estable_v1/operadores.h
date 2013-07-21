@@ -1,6 +1,7 @@
 #ifndef _OPERADORES_H_
 #define _OPERADORES_H_
 //#include "operacion.h"
+#include <vector>
 #include "tipos.h"
 #include <math.h>
 
@@ -30,17 +31,17 @@ namespace all_operators_
     fnptr what_function(Func op);
     Func operator_priority(size_t _N);
     */
-    static Func symbols_operators[]={"+","-","*","/","SIN"};/*Agregar nuevo simbolo aqui*/
-    static fnptr allfunction[] = {&sumab,&resb,&multb,&divb,&sint};/*Agregar nueva funcion aqui*/
-    static int n_operators = sizeof(symbols_operators)/sizeof(symbols_operators[0]);
+    vector<Func> symbols_operators={"+","-","*","/","SIN"};/*Agregar nuevo simbolo aqui*/
+    vector<fnptr> allfunction = {&sumab,&resb,&multb,&divb,&sint};/*Agregar nueva funcion aqui*/
+    auto n_operators = symbols_operators.size();
     /*retorna la direccion de la funcion requerida dependiendo del simbolo del operador(Func)*/
-    static fnptr what_function(Func op){/*retorna la direccion de la funcion requerida dependiendo del simbolo del operador(Func)*/
-        for(register int i=0; i<n_operators;++i)
+    fnptr what_function(Func op){/*retorna la direccion de la funcion requerida dependiendo del simbolo del operador(Func)*/
+        for(register size_t i=0; i<n_operators;++i)
             if(op==symbols_operators[i])
                 return allfunction[i];
     }
     /*Retorna el operador de acuerdo al orden de prioridad de mmenor(cerca a 0) a mayor(mas alejado)*/
-    static Func operator_priority(size_t _N)/*usado en stx.h y .cpp*/
+    Func operator_priority(size_t _N)/*usado en stx.h y .cpp*/
     {
         return symbols_operators[_N];
     }
