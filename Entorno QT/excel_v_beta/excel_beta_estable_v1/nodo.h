@@ -4,6 +4,7 @@
 #include "expresion.h"
 #include "stx.h"
 #include <fstream>
+#include <sstream>
 
 class nodo   /* clase nodo aun no terminada */
 {
@@ -24,10 +25,12 @@ public:
     void set_ptrdependencies(nodo* ptr_nodo);/*Inserta un puntero a nodo en el vector de dependencias*/
     void erase_ptrdependencies(nodo* ptr_nodo);/*Elimina un vector a nodo en el vector de dependencias*/
     void SaveDisk(ofstream & os)
-        {
-        if (nodo_valor==0 || my_funcion!="")
-            os<<"Copiado"<<endl;
-        }
+    {
+        std::ostringstream tmp_valor;
+        tmp_valor << nodo_valor;
+        std::string func_valor = tmp_valor.str();
+        os << func_valor << " " << my_funcion << endl;
+    }
 };
 
 typedef vector<nodo> my_row; /*defino variable de una fila de nodos como un vector*/

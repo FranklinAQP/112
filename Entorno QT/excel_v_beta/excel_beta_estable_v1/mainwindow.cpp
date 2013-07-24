@@ -408,15 +408,11 @@ void MainWindow::on_actionPaste_triggered()
     //ui->tableWidget->item(current_row,current_col)->text().co
 }
 
+/*Evento Save: Guarda el archivo actual por defecto como prueba.txt*/
 void MainWindow::on_actionSave_triggered()
 {
     char* name_file= "prueba.txt";
     my_matriz.SaveDisk(name_file);
-    //ofstream archivo(name_file);
-    //archivo << "prueba" << endl;
-    // cout << name_file <<endl;
-    //my_matriz.SaveDisk((char *)name_file.c_str());
-
 }
 
 void MainWindow::on_actionNew_triggered()

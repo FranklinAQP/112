@@ -34,10 +34,23 @@ public:
         {
             ofstream prueba(filename);
             prueba << "Excel Beta Pro Estable V1.0" << endl;
-            prueba << "Filas Columnas"<< endl;
-            for(register coord f=0;f<=current_row;++f)
-                 for(register coord c=0;c<=current_col;++c)
-                    matriz[f][c].SaveDisk(prueba);
+            stringstream tmp_max_row, tmp_max_col;
+            tmp_max_row << max_row;
+            tmp_max_col << max_col;
+            string func_max_row = tmp_max_row.str();
+            string func_max_col = tmp_max_col.str();
+            prueba << func_max_row << " " << func_max_col << endl;
+            for(register coord f=0;f<max_row;++f)
+                 for(register coord c=0;c<max_col;++c)
+                     if(matriz[f][c].get_my_function()!=""){
+                        stringstream tmp_row, tmp_col;
+                        tmp_row << f;
+                        tmp_col << c;
+                        string func_row = tmp_row.str();
+                        string func_col = tmp_col.str();
+                        prueba << func_row << " " << func_col << " ";
+                        matriz[f][c].SaveDisk(prueba);
+                    }
             prueba.close();
         }
 };
