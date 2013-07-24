@@ -3,6 +3,7 @@
 #include <vector>
 #include "expresion.h"
 #include "stx.h"
+#include <fstream>
 
 class nodo   /* clase nodo aun no terminada */
 {
@@ -22,6 +23,11 @@ public:
     inline Func get_my_function(){return my_funcion;}
     void set_ptrdependencies(nodo* ptr_nodo);/*Inserta un puntero a nodo en el vector de dependencias*/
     void erase_ptrdependencies(nodo* ptr_nodo);/*Elimina un vector a nodo en el vector de dependencias*/
+    void SaveDisk(ofstream & os)
+        {
+        if (nodo_valor==0 || my_funcion!="")
+            os<<"Copiado"<<endl;
+        }
 };
 
 typedef vector<nodo> my_row; /*defino variable de una fila de nodos como un vector*/

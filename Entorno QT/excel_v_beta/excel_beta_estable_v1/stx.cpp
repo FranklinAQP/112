@@ -197,7 +197,7 @@ void stx::Root()
     if (list_atomos.size()==1)
         root = dependencies[0];
     else
-        root = NULL;//detect_root(size_t(0), list_atomos.size(), Number_Operators());
+        root = detect_root(size_t(0), list_atomos.size());
 }
 
 /*Ejecuta el parse pasos del 1 al 4 y devueleve el valor de root*/

@@ -1,6 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 #include "nodo.h"
+#include <fstream>
 
 class matrix   /*Crea una matriz dinamica con vectores*/
 {
@@ -29,6 +30,16 @@ public:
         inline void set_current_row(coord fila){current_row=fila;}/*cambia el valor de fila actual*/
         inline void set_current_col(coord col){current_col=col;}/*cambia el valor de columna actual*/
         inline void set_current_row_col(coord row, coord col){current_row=row; current_col=col;}/*cambia el valor de fila y columna actual*/
+        void SaveDisk(char * filename)
+        {
+            ofstream prueba(filename);
+            prueba << "Excel Beta Pro Estable V1.0" << endl;
+            prueba << "Filas Columnas"<< endl;
+            for(register coord f=0;f<=current_row;++f)
+                 for(register coord c=0;c<=current_col;++c)
+                    matriz[f][c].SaveDisk(prueba);
+            prueba.close();
+        }
 };
 
 #endif // MATRIX_H

@@ -1,8 +1,8 @@
 #Proyecto
-main.cpp
-mainwindow.h
+#main.cpp
+#mainwindow.h
 ui_mainwindow.h
-mainwindow.cpp
+#mainwindow.cpp
 moc_mainwindow.cpp
 Makefile
 .cproject
